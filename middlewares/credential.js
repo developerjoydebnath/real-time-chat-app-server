@@ -1,5 +1,5 @@
 const config = {
-    ORIGIN: 'http://localhost,http://localhost:3000,http://localhost:3001',
+    ORIGIN: 'http://localhost,http://localhost:3000,http://localhost:3001,https://real-time-chat-app-client-nine.vercel.app',
 };
 
 const credentials = (req, res, next) => {
@@ -7,7 +7,7 @@ const credentials = (req, res, next) => {
     const origin = req.headers.origin;
 
     if (listedOrigins.indexOf(origin) !== -1) {
-        res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
+        res.setHeader('Access-Control-Allow-Origin', '*');
         res.setHeader('Access-Control-Allow-Credentials', 'true');
         res.setHeader('Access-Control-Max-Age', '1800');
         res.setHeader('Access-Control-Allow-Headers', 'content-type');
