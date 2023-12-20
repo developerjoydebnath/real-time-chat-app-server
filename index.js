@@ -4,6 +4,8 @@ const cors = require('cors');
 const bodyParser = require('body-parser');
 const router = require('./routes');
 const { db } = require('./database/db');
+const { corsOptions } = require('./utils/corsOptions');
+const { credentials } = require('./middlewares/credential');
 
 const app = express();
 const port = process.env.PORT || 8000;
@@ -20,8 +22,10 @@ const io = require('socket.io')(httpServer, {
 });
 
 // middlewares
-app.use(cors({ origin: '*' }));
+app.use(credentials);
+app.use(cors(corsOptions));
 app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 
 // routes
 app.use('/api/v1', router);
