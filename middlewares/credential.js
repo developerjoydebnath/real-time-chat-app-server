@@ -1,3 +1,7 @@
+const config = {
+    ORIGIN: 'http://localhost,http://localhost:3000,http://localhost:3001',
+};
+
 const credentials = (req, res, next) => {
     const listedOrigins = config.ORIGIN.split(',');
     const origin = req.headers.origin;

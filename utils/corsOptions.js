@@ -1,3 +1,7 @@
+const config = {
+    ORIGIN: 'http://localhost,http://localhost:3000,http://localhost:3001',
+};
+
 const corsOptions = {
     origin: (origin, callback) => {
         const listedOrigins = config.ORIGIN.split(',');
