@@ -14,7 +14,7 @@ const httpServer = require('http').createServer(app);
 
 const io = require('socket.io')(httpServer, {
     cors: {
-        origin: 'https://real-time-chat-app-client-nine.vercel.app',
+        origin: '*',
         methods: ['GET', 'POST'],
         credentials: true,
         allowedHeaders: ['Access-Control-Allow-Origin'],
