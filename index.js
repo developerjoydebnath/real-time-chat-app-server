@@ -12,6 +12,14 @@ const port = process.env.PORT || 8000;
 
 const httpServer = require('http').createServer(app);
 
+const io = require('socket.io')(httpServer, {
+    cors: {
+        origin: 'https://real-time-chat-app-client-nine.vercel.app',
+        methods: ['GET', 'POST'],
+        credentials: true,
+    },
+});
+
 // middlewares
 app.use(credentials);
 app.use(cors(corsOptions));
@@ -25,14 +33,6 @@ app.use('/api/v1', router);
 db();
 
 // socket io starts ================================================================
-
-const io = require('socket.io')(httpServer, {
-    cors: {
-        origin: 'https://real-time-chat-app-client-nine.vercel.app',
-        methods: ['GET', 'POST'],
-        credentials: true,
-    },
-});
 
 // declare the online users array
 let onlineUsers = [];
