@@ -17,6 +17,7 @@ const io = require('socket.io')(httpServer, {
         origin: 'https://real-time-chat-app-client-nine.vercel.app',
         methods: ['GET', 'POST'],
         credentials: true,
+        allowedHeaders: ['Access-Control-Allow-Origin'],
     },
 });
 
