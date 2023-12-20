@@ -57,6 +57,7 @@ io.on('connection', (socket) => {
         }
     });
 
+    // remove disconnected users from the list of online users
     socket.on('disconnect', () => {
         onlineUsers = onlineUsers.filter((user) => user.socketId !== socket.id);
         io.emit('online-users', onlineUsers);
