@@ -1,5 +1,5 @@
 const config = {
-    ORIGIN: 'http://localhost,http://localhost:3000,http://localhost:3001,https://real-time-chat-app-client-nine.vercel.app',
+    ORIGIN: 'http://localhost,http://localhost:3000,http://localhost:3001,https://real-time-chat-app-client-nine.vercel.app,https://real-time-chat-app-server-eta.vercel.app',
 };
 
 const corsOptions = {
