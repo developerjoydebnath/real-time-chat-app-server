@@ -1,5 +1,5 @@
 const config = {
-    ORIGIN: 'http://localhost,http://localhost:3000,http://localhost:8000,https://real-time-chat-app-client-nine.vercel.app,https://real-time-chat-app-server-eta.vercel.app',
+    ORIGIN: 'http://localhost,http://localhost:3000,http://localhost:8000,https://real-time-chat-app-client-nine.vercel.app,https://real-time-chat-app-server-eta.vercel.app,https://realtime-chat-app-server-odpz.onrender.com',
 };
 
 const credentials = (req, res, next) => {
