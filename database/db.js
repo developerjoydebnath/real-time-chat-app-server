@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const url = process.env.DB_CONNECTION_STRING;
+const url = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.filpgs7.mongodb.net/chat-app`;
 console.log(url);
 
 const db = async () => {
