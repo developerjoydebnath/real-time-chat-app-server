@@ -1,5 +1,4 @@
 const Conversation = require('../models/conversation.model');
-const User = require('../models/user.model');
 
 // create or update conversation list
 const createConversation = async (req, res) => {
