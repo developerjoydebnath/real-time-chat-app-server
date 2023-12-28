@@ -1,5 +1,10 @@
 const Message = require('../models/message.model');
 
+// file upload
+const uploadFile = async (req, res) => {
+    res.send('hello world');
+};
+
 // add a new message to database
 const addMessage = async (req, res) => {
     try {
@@ -54,4 +59,4 @@ const markAsRead = async (req, res) => {
     }
 };
 
-module.exports = { addMessage, getConversation, getLastMessage, markAsRead };
+module.exports = { addMessage, getConversation, getLastMessage, markAsRead, uploadFile };

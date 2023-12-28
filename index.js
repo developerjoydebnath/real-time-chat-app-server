@@ -6,6 +6,7 @@ const router = require('./routes');
 const { db } = require('./database/db');
 const { corsOptions } = require('./utils/corsOptions');
 const { credentials } = require('./middlewares/credential');
+const path = require('path');
 
 const app = express();
 const port = process.env.PORT || 8000;
@@ -14,18 +15,18 @@ const httpServer = require('http').createServer(app);
 
 const io = require('socket.io')(httpServer, {
     cors: {
-        origin: 'https://real-time-chat-app-client-nine.vercel.app',
+        origin: 'https://comfy-bienenstitch-afa8c6.netlify.app', // https://real-time-chat-app-client-nine.vercel.app, https://658dc5ad73b2161567441cba--comfy-bienenstitch-afa8c6.netlify.app
         methods: ['GET', 'POST'],
         credentials: true,
-        allowedHeaders: ['Access-Control-Allow-Origin'],
     },
 });
 
 // middlewares
-app.use(credentials);
+// app.use(credentials);
 app.use(cors(corsOptions));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(express.static(path.join(__dirname, './public/images')));
 
 // routes
 app.use('/api/v1', router);
