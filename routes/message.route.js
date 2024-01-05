@@ -3,30 +3,19 @@ const {
     getConversation,
     getLastMessage,
     markAsRead,
-    uploadFile,
+    deleteMessage,
+    getMedia,
 } = require('../controllers/message.controller');
-const path = require('path');
+const { fileUploader } = require('../middlewares/fileUploader');
+const { fileValidator } = require('../middlewares/fileValidator.middleware');
 
 const router = require('express').Router();
 
-const multer = require('multer');
-
-const storage = multer.diskStorage({
-    destination: (req, file, cb) => {
-        console.log(file.originalname);
-        cb(null, path.join(__dirname, '../public/images'));
-    },
-    filename: (req, file, cb) => {
-        cb(null, `${Date.now()}_${file.originalname}`);
-    },
-});
-
-const upload = multer({ storage });
-
-router.post('/add', addMessage);
+router.post('/add', fileUploader, fileValidator, addMessage);
 router.get('/get/:conversationId', getConversation);
 router.get('/lastMessage/:conversationId', getLastMessage);
+router.get('/media/:conversationId', getMedia);
 router.put('/update/status', markAsRead);
-router.post('/file-upload', upload.single('file'), uploadFile);
+router.put('/delete/:messageId', deleteMessage);
 
 module.exports = router;

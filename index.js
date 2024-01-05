@@ -16,6 +16,7 @@ const httpServer = require('http').createServer(app);
 const io = require('socket.io')(httpServer, {
     cors: {
         origin: 'https://comfy-bienenstitch-afa8c6.netlify.app', // https://real-time-chat-app-client-nine.vercel.app, https://658dc5ad73b2161567441cba--comfy-bienenstitch-afa8c6.netlify.app
+        // origin: 'http://localhost:3000',
         methods: ['GET', 'POST'],
         credentials: true,
     },
@@ -59,6 +60,14 @@ io.on('connection', (socket) => {
         const receiver = onlineUsers?.find((user) => user.userId === messageDetail?.receiverId);
         if (receiver?.socketId) {
             io.to(receiver.socketId).emit('get-message', messageDetail);
+        }
+    });
+
+    socket.on('deleteMessage', (messageDetail) => {
+        const receiver = onlineUsers?.find((user) => user.userId === messageDetail?.receiverId);
+
+        if (receiver?.socketId) {
+            io.to(receiver.socketId).emit('deleted-message', messageDetail);
         }
     });
 

@@ -1,14 +1,15 @@
+const path = require('path');
 const Message = require('../models/message.model');
-
-// file upload
-const uploadFile = async (req, res) => {
-    res.send('hello world');
-};
+const { unlink } = require('fs');
 
 // add a new message to database
 const addMessage = async (req, res) => {
+    const messageBody = {
+        ...req.body,
+        image: req.files.length > 0 ? req.files[0].filename : null,
+    };
     try {
-        const message = await Message.create(req.body);
+        const message = await Message.create(messageBody);
         if (message) {
             return res.status(200).json({ isSuccess: true, data: message });
         } else {
@@ -22,15 +23,36 @@ const addMessage = async (req, res) => {
 // get a specific conversation from database
 const getConversation = async (req, res) => {
     const { conversationId } = req.params;
-    try {
-        const conversation = await Message.find({ conversationId: conversationId });
+    const { limit, page } = req.query;
+    const pageNumber = parseInt(page);
+    const limitNumber = parseInt(limit);
 
-        res.status(200).json({ isSuccess: true, data: conversation });
+    try {
+        const conversation = await Message.find({ conversationId: conversationId })
+            .skip(limitNumber * pageNumber)
+            .sort({ createdAt: 'desc' })
+            .limit(limitNumber);
+
+        res.status(200).json({ isSuccess: true, data: conversation.reverse() });
     } catch (err) {
         return res.status(500).json({ isSuccess: false, message: err.message });
     }
 };
 
+// get all media for a specific conversation
+const getMedia = async (req, res) => {
+    const { conversationId } = req.params;
+    try {
+        const media = await Message.find({ conversationId: conversationId, image: { $ne: null } }).select(
+            '_id conversationId image',
+        );
+        return res.status(200).json({ isSuccess: true, data: media });
+    } catch (err) {
+        return res.status(500).json({ isSuccess: false, message: err });
+    }
+};
+
+// get last conversation from database
 const getLastMessage = async (req, res) => {
     const conversationId = req.params.conversationId;
 
@@ -46,6 +68,7 @@ const getLastMessage = async (req, res) => {
     }
 };
 
+// mark all conversation as read
 const markAsRead = async (req, res) => {
     const { chatId, userId } = req.body;
     if (chatId && userId) {
@@ -59,4 +82,25 @@ const markAsRead = async (req, res) => {
     }
 };
 
-module.exports = { addMessage, getConversation, getLastMessage, markAsRead, uploadFile };
+// delete a message from a conversation
+const deleteMessage = async (req, res) => {
+    const { messageId } = req.params;
+    try {
+        const message = await Message.findById(messageId);
+        const updatedMessage = await Message.findByIdAndUpdate(
+            messageId,
+            { isDeleted: true, message: null, image: null },
+            { new: true },
+        );
+
+        if (message?.image) {
+            unlink(path.join(__dirname, `/../public/images/${message.image}`), (err) => console.log(err));
+        }
+
+        return res.status(200).json({ isSuccess: true, data: updatedMessage });
+    } catch (err) {
+        return res.status(500).json({ isSuccess: false, message: err.message });
+    }
+};
+
+module.exports = { addMessage, getConversation, getLastMessage, markAsRead, deleteMessage, getMedia };

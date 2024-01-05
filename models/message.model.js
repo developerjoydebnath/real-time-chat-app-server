@@ -17,6 +17,13 @@ const messageSchema = new mongoose.Schema(
         message: {
             type: String,
         },
+        isDeleted: {
+            type: Boolean,
+            default: false,
+        },
+        image: {
+            type: String,
+        },
         isRead: {
             type: Boolean,
             required: true,
